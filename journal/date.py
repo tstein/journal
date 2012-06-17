@@ -1,15 +1,22 @@
 """ Provides functions for working with dates. """
 
 from collections import namedtuple
-from time import localtime, strftime, struct_time
+from time import localtime, strftime, struct_time, time
+
+from journal.config import getconf
 
 
 Date = namedtuple('Date', ['year', 'month', 'day'])
 
 
 def getcurrentdate():
-    """ Return the current date as a Date namedtuple. """
-    now = localtime()
+    """ Return the current date as a Date namedtuple.
+
+    The current day lasts until the hour reaches getconf('end_of_day'). e.g.,
+    If the day ends at 5 and it is 04:00 on 2012-04-08, this function will
+    return 2012-04-07."""
+    end_of_day = getconf('end_of_day')
+    now = localtime(time() - (60 * 60 * end_of_day))
     year = now.tm_year
     month = now.tm_mon
     day = now.tm_mday

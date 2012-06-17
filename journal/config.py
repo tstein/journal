@@ -8,6 +8,7 @@ _CONFIG = dict()
 # FIXME: MAGIC
 _CONFIG['config_dir'] = '~/.journal'
 _CONFIG['entry_dir'] = path.join(_CONFIG['config_dir'], 'entries')
+_CONFIG['end_of_day'] = 5
 
 
 def getconf(key):
