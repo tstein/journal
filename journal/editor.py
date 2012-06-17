@@ -16,7 +16,5 @@ def openeditor(filename, template=""):
         with open(filename, 'wb') as f:
             catproc = Popen("cat", stdin=PIPE, stdout=f)
             catproc.communicate(input=template)
-    # envoy is far more comfortable, but doesn't automatically hand off the tty
-    # correctly. system() does.
     system("vim + %s" % filename)
 
