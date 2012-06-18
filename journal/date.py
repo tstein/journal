@@ -1,7 +1,7 @@
 """ Provides functions for working with dates. """
 
 from collections import namedtuple
-from time import localtime, strftime, struct_time, time
+from time import localtime, strftime, strptime, time
 
 from journal.config import getconf
 
@@ -34,13 +34,16 @@ def parsedate(date):
     day = int(pieces[2])
     return Date(year, month, day)
 
+
+def datetostruct_time(date):
+    """ Convert a date to seconds since the epoch. """
+    # This, sadly, is the simplest way to get the day of the week right.
+    datestr = "%d %d %d" % date
+    return strptime(datestr, "%Y %m %d")
+
+
 def renderdate(date):
     """ Return a pretty string representation of date. """
-    # Fill this struct_time with garbage. strftime will never look at those
-    # fields.
-    tm = struct_time((date.year,
-                      date.month,
-                      date.day,
-                      0, 0, 0, 0, 1, -1))
+    tm = datetostruct_time(date)
     return strftime("%A, %B %d, %Y", tm)
 
