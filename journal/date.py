@@ -10,7 +10,7 @@ Date = namedtuple('Date', ['year', 'month', 'day'])
 
 
 def getcurrentdate():
-    """ Return the current date as a Date namedtuple.
+    """ Return the current date as a string that parsedate will understand.
 
     The current day lasts until the hour reaches getconf('end_of_day'). e.g.,
     If the day ends at 5 and it is 04:00 on 2012-04-08, this function will
@@ -20,7 +20,7 @@ def getcurrentdate():
     year = now.tm_year
     month = now.tm_mon
     day = now.tm_mday
-    return Date(year, month, day)
+    return "%04d-%02d-%02d" % (year, month, day)
 
 
 def parsedate(date):
