@@ -22,16 +22,16 @@ _CMD_FUNCS = {
 def main():
     parser = _makeparser()
     args = parser.parse_args()
-    command = args.command
+    mode  = args.mode
+    mode_args = args.mode_args
     try:
-        if not command:
+        if not mode:
             raise InvocationError("no command given")
-        if command[0] not in _CMD_FUNCS:
-            raise InvocationError("invalid mode: %s" % command[0])
-        mode = command[0]
-        command = command[1:]
+        mode = mode[0]
+        if mode not in _CMD_FUNCS:
+            raise InvocationError("invalid mode: %s" % mode)
         # Hand off to something in journal.mode.
-        _CMD_FUNCS[mode](command)
+        _CMD_FUNCS[mode](mode_args)
     except InvocationError as invoc_e:
         _exit(1, invoc_e.message)
     except:
@@ -43,8 +43,10 @@ def main():
 def _makeparser():
     """ Initialize an argument parser. """
     parser = ArgumentParser(description=_DESCRIPTION)
-    parser.add_argument('command', action='store', nargs='*',
-                        help='The date to modify or view.')
+    parser.add_argument('mode', action='store', nargs=1,
+                        help='The mode of operation.')
+    parser.add_argument('mode_args', metavar='args', action='store', nargs='*',
+                        help='Mode-specific arguments.')
     return parser
 
 
