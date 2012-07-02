@@ -24,6 +24,6 @@ def write(command):
     openeditor(filename, template=template)
 
 
-def cat(command):
+def read(command):
     pass
 

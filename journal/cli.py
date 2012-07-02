@@ -13,10 +13,10 @@ _DESCRIPTION = 'Modify and review a journal of your activities.'
 _ERR_UNCAUGHT_EXC = 'main: uncaught exception'
 
 _WRITE_CMD = 'write'
-_CAT_CMD = 'read'
+_READ_CMD = 'read'
 _CMD_FUNCS = {
     _WRITE_CMD: mode.write,
-    _CAT_CMD:   mode.cat
+    _READ_CMD:  mode.read
 }
 
 
