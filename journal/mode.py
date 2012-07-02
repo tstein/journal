@@ -1,6 +1,6 @@
 """ Provides methods implementing each invocation mode. """
 
-from journal.date import parsedate
+from journal.date import getcurrentdate, parsedate
 from journal.editor import openeditor
 from journal.exception import ERR_COULD_NOT_PARSE, InvocationError
 from journal.fs import getentrypath
@@ -12,8 +12,8 @@ _ERR_NOT_A_SINGLE_DATE = "write requires a single date"
 
 def write(command):
     """ Edit an entry for an individual day. """
-    if len(command) != 1:
-        raise InvocationError(_ERR_NOT_A_SINGLE_DATE)
+    if len(command) == 0:
+        command = [getcurrentdate()]
     date_token = command[0]
     try:
         date = parsedate(date_token)

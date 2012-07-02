@@ -5,7 +5,6 @@ from sys import exit
 from traceback import print_exc
 
 from journal import mode
-from journal.date import getcurrentdate
 from journal.exception import InvocationError
 
 
@@ -24,25 +23,20 @@ def main():
     parser = _makeparser()
     args = parser.parse_args()
     command = args.command
-    if command:
-        if command[0] in _CMD_FUNCS:
-            mode = command[0]
-            command = command[1:]
-        else:
-            # Default to editing and let mode.write validate the rest.
-            mode = _WRITE_CMD
-    else:
-        # Default to editing the entry for the current day.
-        mode = _WRITE_CMD
-        command = [getcurrentdate()]
-    # Hand off to something in journal.mode.
     try:
+        if not command:
+            raise InvocationError("no command given")
+        if command[0] not in _CMD_FUNCS:
+            raise InvocationError("invalid mode: %s" % command[0])
+        mode = command[0]
+        command = command[1:]
+        # Hand off to something in journal.mode.
         _CMD_FUNCS[mode](command)
     except InvocationError as invoc_e:
         _exit(1, invoc_e.message)
     except:
-       print_exc()
-       _exit(127, _ERR_UNCAUGHT_EXC)
+        print_exc()
+        _exit(127, _ERR_UNCAUGHT_EXC)
     _exit(0)
 
 
