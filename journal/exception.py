@@ -14,3 +14,8 @@ class InvocationError(JournalError):
     """ Indicates an invalid command-line invocation. """
     pass
 
+class FilesystemError(JournalError):
+    """ Indicates that a file could not be accessed due to permissions or
+    nonexistence. """
+    pass
+
