@@ -5,7 +5,7 @@ from sys import exit
 from traceback import print_exc
 
 from journal import mode
-from journal.exception import InvocationError
+from journal.exception import InvocationError, JournalError
 
 
 _DESCRIPTION = 'Modify and review a journal of your activities.'
@@ -22,7 +22,7 @@ _CMD_FUNCS = {
 def main():
     parser = _makeparser()
     args = parser.parse_args()
-    mode  = args.mode
+    mode = args.mode
     mode_args = args.mode_args
     try:
         if not mode:
@@ -32,8 +32,8 @@ def main():
             raise InvocationError("invalid mode: %s" % mode)
         # Hand off to something in journal.mode.
         _CMD_FUNCS[mode](mode_args)
-    except InvocationError as invoc_e:
-        _exit(1, invoc_e.message)
+    except JournalError as e:
+        _exit(1, e.message)
     except:
         print_exc()
         _exit(127, _ERR_UNCAUGHT_EXC)
